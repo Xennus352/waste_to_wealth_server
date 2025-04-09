@@ -1,1 +1,1 @@
-# CU_CONNECT_SERVER
+# Waste To Wealth is an innovative project dedicated to converting waste into valuable resources. By prioritizing sustainability and environmental stewardship, this initiative harnesses technology to minimize waste and enhance recycling efforts. The backend serves as the foundation, enabling robust data processing and smooth integration with other system components.

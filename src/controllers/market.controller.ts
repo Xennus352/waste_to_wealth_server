@@ -7,7 +7,12 @@ export const getProducts = async (
   res: Response
 ): Promise<void> => {
   try {
-    const products = await prisma.market.findMany();
+    const products = await prisma.market.findMany({
+      include: {
+        User: true,
+        Order: true,
+      },
+    });
 
     res.status(200).json(products);
   } catch (error: any) {
@@ -48,21 +53,39 @@ export const createProduct = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { title, price, quantity, picture, type, description } = req.body;
+    const { title, type, description, picture, price, quantity } = req.body;
 
     // Validate input
-    if (!title || !price || !quantity || !type || !description) {
+    if (!title || !type || !price || !quantity || !description) {
       res.status(400).json({ message: "All fields are required." });
       return;
     }
 
-    const raw = { title, price, quantity, type, description, picture };
-    const product = await prisma.market.create({
-      data: raw,
+    // Ensure the user is authenticated
+    const user = req.user as { id: string };
+    if (!user || !user.id) {
+      res
+        .status(401)
+        .json({ message: "Unauthorized: User not authenticated." });
+      return;
+    }
+
+    const rawProduct = {
+      title,
+      type,
+      description,
+      picture,
+      price,
+      quantity,
+      userId: user.id,
+    };
+    const post = await prisma.market.create({
+      data: rawProduct,
     });
+
     res
       .status(201)
-      .json({ message: "Product created successfully.", product: product });
+      .json({ message: "Product created successfully.", product: post });
   } catch (error: any) {
     res.status(500).json({
       message: "An error occurred on create product",

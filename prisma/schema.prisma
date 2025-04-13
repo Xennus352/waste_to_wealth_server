@@ -32,6 +32,8 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Useful    Useful[]
+  Order     Order[]
 }
 
 model Session {
@@ -51,7 +53,6 @@ model Post {
   contentBurmese String?
   image          String?
   type           String
-  useful         Boolean   @default(false)
   isApproved     Boolean   @default(false)
   userId         String?
   Comment        Comment[]
@@ -61,6 +62,7 @@ model Post {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Useful    Useful[]
 }
 
 model Comment {
@@ -76,6 +78,19 @@ model Comment {
 }
 
 model Like {
+  id     String  @id @default(cuid())
+  postId String?
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  Post   Post?   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, postId]) // prevent duplicate likes
+}
+
+model Useful {
   id     String  @id @default(cuid())
   postId String?
   User   User?   @relation(fields: [userId], references: [id])
@@ -116,7 +131,7 @@ model Market {
   price       String
   quantity    String
   type        String
-  picture     String
+  picture     String?
   Order       Order[]
 
   User   User?   @relation(fields: [userId], references: [id])
@@ -127,12 +142,25 @@ model Market {
 }
 
 model Order {
-  id String @id @default(cuid())
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  Market       Market?  @relation(fields: [marketId], references: [id])
+  marketId     String?
+  User         User?    @relation(fields: [userId], references: [id])
+  userId       String?
+  name         String?
+  buyerPhone   String?
+  buyerAddress String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Market    Market?  @relation(fields: [marketId], references: [id])
-  marketId  String?
+  // Product owner details
+  productOwnerName    String
+  productOwnerPhone   String
+  productOwnerAddress String
+  quantity            String
+  price               String
+  // Cash transfer photo
+  cashTransferPhoto   String
 }
 
 model Handmade {

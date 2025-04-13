@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
 
-// get likes
-export const getLikes = async (req: Request, res: Response): Promise<void> => {
+// get useful
+export const getUseful = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.body;
 
   try {
-    const likes = await prisma.like.findMany({
+    const useful = await prisma.useful.findMany({
       where: { id },
       include: {
         Post: true,
@@ -14,7 +14,7 @@ export const getLikes = async (req: Request, res: Response): Promise<void> => {
       },
     });
 
-    res.json({ likes });
+    res.json({ useful });
   } catch (error: any) {
     res.status(500).json({
       message: "An error occurred while fetching comments.",
@@ -23,8 +23,8 @@ export const getLikes = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// create like
-export const createLike = async (
+// create useful
+export const createUseful = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -37,31 +37,31 @@ export const createLike = async (
       return;
     }
 
-    // Check if already liked
-    const existingLike = await prisma.like.findFirst({
+    // Check if already set
+    const existingUseful = await prisma.useful.findFirst({
       where: {
         userId,
         postId,
       },
     });
-    if (existingLike) {
-      await prisma.like.delete({
+    if (existingUseful) {
+      await prisma.useful.delete({
         where: {
-          id: existingLike.id,
+          id: existingUseful.id,
         },
       });
       res.status(200).json({ message: "Like removed" });
       return;
     }
 
-    const like = await prisma.like.create({
+    const useful = await prisma.useful.create({
       data: {
         userId,
         postId,
       },
     });
 
-    res.status(201).json(like);
+    res.status(201).json(useful);
   } catch (error: any) {
     res.status(500).json({
       message: "An error occurred while fetching posts.",

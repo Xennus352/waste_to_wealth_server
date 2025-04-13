@@ -7,7 +7,9 @@ export const getFeedbacks = async (
   res: Response
 ): Promise<void> => {
   try {
-    const feedbacks = await prisma.feedback.findMany();
+    const feedbacks = await prisma.feedback.findMany({
+      include: { User: true },
+    });
 
     res.status(200).json(feedbacks);
   } catch (error: any) {

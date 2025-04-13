@@ -11,6 +11,8 @@ import AuthRouter from "./routes/auth";
 import UserRouter from "./routes/user";
 import PostRouter from "./routes/post";
 import LikeRouter from "./routes/like";
+import UsefulRouter from "./routes/useful";
+import SaveRouter from "./routes/save";
 import CommentRouter from "./routes/comment";
 import FeedbackRouter from "./routes/feedback";
 import HandmadeRouter from "./routes/handmade";
@@ -53,6 +55,8 @@ server.get("/api/me", AuthRouter, (req, res) => {
 server.use("/api/user", authenticateSession, UserRouter); // User CRUD
 server.use("/api/post", authenticateSession, PostRouter); // Post CRUD
 server.use("/api/like", authenticateSession, LikeRouter); // Like CRUD
+server.use("/api/useful", authenticateSession, UsefulRouter); // Useful CRUD
+server.use("/api/save", authenticateSession, SaveRouter); // Save CRUD
 server.use("/api/comment", authenticateSession, CommentRouter); // Comment CRUD
 server.use("/api/feedback", authenticateSession, FeedbackRouter); // Feedback CRUD
 server.use("/api/handmade", authenticateSession, HandmadeRouter); // Handmade guide CRUD

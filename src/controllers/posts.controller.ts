@@ -5,7 +5,7 @@ import { prisma } from "../utils/prisma";
 export const getPosts = async (req: Request, res: Response): Promise<void> => {
   try {
     const posts = await prisma.post.findMany({
-      include:{Like:true},
+      include: { Like: true, User: true, Save: true, Useful: true },
       orderBy: { updatedAt: "desc" },
     });
 
@@ -48,15 +48,8 @@ export const createPost = async (
   res: Response
 ): Promise<void> => {
   try {
-    const {
-      title,
-      contentEnglish,
-      contentBurmese,
-      image,
-      useful,
-      isApproved,
-      type,
-    } = req.body;
+    const { title, contentEnglish, contentBurmese, image, isApproved, type } =
+      req.body;
 
     // Validate input
     if (!title || !type) {
@@ -78,7 +71,6 @@ export const createPost = async (
       contentBurmese,
       contentEnglish,
       image,
-      useful,
       isApproved,
       type,
       userId: user.id,
@@ -104,15 +96,8 @@ export const updatePost = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const {
-      title,
-      contentEnglish,
-      contentBurmese,
-      image,
-      useful,
-      isApproved,
-      type,
-    } = req.body;
+    const { title, contentEnglish, contentBurmese, image, isApproved, type } =
+      req.body;
 
     // Validate required field
     if (!id) {
@@ -132,7 +117,6 @@ export const updatePost = async (
         contentEnglish,
         contentBurmese,
         image,
-        useful,
         isApproved,
         type,
       },

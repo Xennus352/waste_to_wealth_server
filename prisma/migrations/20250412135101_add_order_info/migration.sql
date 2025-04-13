@@ -36,7 +36,6 @@ CREATE TABLE `Post` (
     `contentBurmese` VARCHAR(191) NULL,
     `image` VARCHAR(191) NULL,
     `type` VARCHAR(191) NOT NULL,
-    `useful` BOOLEAN NOT NULL DEFAULT false,
     `isApproved` BOOLEAN NOT NULL DEFAULT false,
     `userId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -70,6 +69,18 @@ CREATE TABLE `Like` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Useful` (
+    `id` VARCHAR(191) NOT NULL,
+    `postId` VARCHAR(191) NULL,
+    `userId` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Useful_userId_postId_key`(`userId`, `postId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Save` (
     `id` VARCHAR(191) NOT NULL,
     `postId` VARCHAR(191) NULL,
@@ -99,7 +110,7 @@ CREATE TABLE `Market` (
     `price` VARCHAR(191) NOT NULL,
     `quantity` VARCHAR(191) NOT NULL,
     `type` VARCHAR(191) NOT NULL,
-    `picture` VARCHAR(191) NOT NULL,
+    `picture` VARCHAR(191) NULL,
     `userId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -113,6 +124,16 @@ CREATE TABLE `Order` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `marketId` VARCHAR(191) NULL,
+    `userId` VARCHAR(191) NULL,
+    `name` VARCHAR(191) NULL,
+    `buyerPhone` VARCHAR(191) NULL,
+    `buyerAddress` VARCHAR(191) NULL,
+    `productOwnerName` VARCHAR(191) NOT NULL,
+    `productOwnerPhone` VARCHAR(191) NOT NULL,
+    `productOwnerAddress` VARCHAR(191) NOT NULL,
+    `quantity` VARCHAR(191) NOT NULL,
+    `price` VARCHAR(191) NOT NULL,
+    `cashTransferPhoto` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -150,6 +171,12 @@ ALTER TABLE `Like` ADD CONSTRAINT `Like_userId_fkey` FOREIGN KEY (`userId`) REFE
 ALTER TABLE `Like` ADD CONSTRAINT `Like_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `Post`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Useful` ADD CONSTRAINT `Useful_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Useful` ADD CONSTRAINT `Useful_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `Post`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Save` ADD CONSTRAINT `Save_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `Post`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -163,6 +190,9 @@ ALTER TABLE `Market` ADD CONSTRAINT `Market_userId_fkey` FOREIGN KEY (`userId`) 
 
 -- AddForeignKey
 ALTER TABLE `Order` ADD CONSTRAINT `Order_marketId_fkey` FOREIGN KEY (`marketId`) REFERENCES `Market`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Order` ADD CONSTRAINT `Order_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Handmade` ADD CONSTRAINT `Handmade_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

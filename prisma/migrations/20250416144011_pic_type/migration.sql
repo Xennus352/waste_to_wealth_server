@@ -110,7 +110,7 @@ CREATE TABLE `Market` (
     `price` VARCHAR(191) NOT NULL,
     `quantity` VARCHAR(191) NOT NULL,
     `type` VARCHAR(191) NOT NULL,
-    `picture` VARCHAR(191) NULL,
+    `picture` LONGTEXT NULL,
     `userId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE `Order` (
     `productOwnerAddress` VARCHAR(191) NOT NULL,
     `quantity` VARCHAR(191) NOT NULL,
     `price` VARCHAR(191) NOT NULL,
-    `cashTransferPhoto` VARCHAR(191) NOT NULL,
+    `cashTransferPhoto` LONGTEXT NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -131,7 +131,7 @@ model Market {
   price       String
   quantity    String
   type        String
-  picture     String?
+  picture     String? @db.LongText
   Order       Order[]
 
   User   User?   @relation(fields: [userId], references: [id])
@@ -160,7 +160,7 @@ model Order {
   quantity            String
   price               String
   // Cash transfer photo
-  cashTransferPhoto   String
+  cashTransferPhoto   String @db.LongText
 }
 
 model Handmade {

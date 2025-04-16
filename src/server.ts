@@ -70,10 +70,10 @@ server.use("/api/market", authenticateSession, MarketRouter); //// Market CRUD
 server.use("/api/order", authenticateSession, OrderRouter); //// Order CRUD
 
 // Start the server
-const PORT = process.env.PORT || 8000;
-server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// const PORT = process.env.PORT || 8000;
+// server.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });
 
 
 export default server

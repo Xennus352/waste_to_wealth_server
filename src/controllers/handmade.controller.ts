@@ -7,9 +7,13 @@ export const getHandmades = async (
   res: Response
 ): Promise<void> => {
   try {
-    const handmades = await prisma.handmade.findMany();
+    const handmades = await prisma.handmade.findMany({
+      include: {
+        User: true,
+      },
+    });
 
-    res.status(200).json(handmades);
+    res.status(200).json({ handmades: handmades });
   } catch (error: any) {
     res.status(500).json({
       message: "An error occurred while fetching handmades.",
@@ -48,6 +52,7 @@ export const createHandmade = async (
   res: Response
 ): Promise<void> => {
   try {
+    const id = (req as any).user?.id;
     const { title, descriptionEng, descriptionMyan, picture } = req.body;
 
     // Validate input
@@ -58,6 +63,7 @@ export const createHandmade = async (
 
     const handmade = await prisma.handmade.create({
       data: {
+        userId: id,
         title,
         descriptionEng,
         descriptionMyan,
@@ -90,7 +96,9 @@ export const updateHandmade = async (
       res.status(400).json({ message: "Post ID is required in the URL." });
       return;
     }
-    const existingHandmade = await prisma.handmade.findUnique({ where: { id } });
+    const existingHandmade = await prisma.handmade.findUnique({
+      where: { id },
+    });
     if (!existingHandmade) {
       res.status(404).json({ message: "Handmade not found." });
       return;
@@ -129,11 +137,9 @@ export const deleteHandmade = async (
 
     res.status(200).json({ message: "Handmade deleted successfully" });
   } catch (error: any) {
-    res
-      .status(500)
-      .json({
-        message: "Error while deleting handmade.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error while deleting handmade.",
+      error: error.message,
+    });
   }
 };

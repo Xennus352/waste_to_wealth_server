@@ -26,7 +26,12 @@ export const getSinglePost = async (
   try {
     const { id } = req.params;
 
-    const post = await prisma.post.findFirst({ where: { id } });
+    const post = await prisma.post.findFirst({
+      where: { id },
+      include: {
+        User: true,
+      },
+    });
 
     if (!post) {
       res.status(400).json({ message: "Not found!" });
@@ -98,6 +103,7 @@ export const updatePost = async (
     const { id } = req.params;
     const { title, contentEnglish, contentBurmese, image, isApproved, type } =
       req.body;
+console.log(id)
 
     // Validate required field
     if (!id) {
@@ -105,11 +111,11 @@ export const updatePost = async (
       return;
     }
     const existingPost = await prisma.post.findUnique({ where: { id } });
+
     if (!existingPost) {
       res.status(404).json({ message: "Post not found." });
       return;
     }
-
     const updatedPost = await prisma.post.update({
       where: { id },
       data: {

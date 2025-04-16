@@ -32,9 +32,9 @@ CREATE TABLE `Session` (
 CREATE TABLE `Post` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
-    `contentEnglish` VARCHAR(191) NULL,
-    `contentBurmese` VARCHAR(191) NULL,
-    `image` VARCHAR(191) NULL,
+    `contentEnglish` LONGTEXT NULL,
+    `contentBurmese` LONGTEXT NULL,
+    `image` LONGTEXT NULL,
     `type` VARCHAR(191) NOT NULL,
     `isApproved` BOOLEAN NOT NULL DEFAULT false,
     `userId` VARCHAR(191) NULL,
@@ -94,7 +94,7 @@ CREATE TABLE `Save` (
 -- CreateTable
 CREATE TABLE `Feedback` (
     `id` VARCHAR(191) NOT NULL,
-    `content` VARCHAR(191) NOT NULL,
+    `content` LONGTEXT NOT NULL,
     `userId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -142,9 +142,9 @@ CREATE TABLE `Order` (
 CREATE TABLE `Handmade` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
-    `descriptionEng` VARCHAR(191) NOT NULL,
-    `descriptionMyan` VARCHAR(191) NOT NULL,
-    `picture` VARCHAR(191) NOT NULL,
+    `descriptionEng` LONGTEXT NOT NULL,
+    `descriptionMyan` LONGTEXT NOT NULL,
+    `picture` LONGTEXT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` VARCHAR(191) NULL,

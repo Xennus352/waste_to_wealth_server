@@ -16,7 +16,7 @@ router.get("/", getHandmades);
 router.get("/:id", getSingleHandmade);
 
 // Route to create a new handmade
-router.post("/create-product", createHandmade);
+router.post("/add-guide", createHandmade);
 
 // Route to update a handmade by ID
 router.put("/:id", updateHandmade);

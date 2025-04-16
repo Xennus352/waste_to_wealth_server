@@ -49,9 +49,9 @@ model Session {
 model Post {
   id             String    @id @default(cuid())
   title          String
-  contentEnglish String?
-  contentBurmese String?
-  image          String?
+  contentEnglish String?   @db.LongText
+  contentBurmese String?   @db.LongText
+  image          String?   @db.LongText
   type           String
   isApproved     Boolean   @default(false)
   userId         String?
@@ -116,7 +116,7 @@ model Save {
 
 model Feedback {
   id      String  @id @default(cuid())
-  content String
+  content String  @db.LongText
   User    User?   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId  String?
 
@@ -164,11 +164,11 @@ model Order {
 }
 
 model Handmade {
-  id              String @id @default(cuid())
+  id              String  @id @default(cuid())
   title           String
-  descriptionEng  String
-  descriptionMyan String
-  picture         String
+  descriptionEng  String  @db.LongText
+  descriptionMyan String  @db.LongText
+  picture         String? @db.LongText
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

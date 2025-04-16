@@ -30,9 +30,14 @@ const corsOptions = {
 };
 
 server.use(cors(corsOptions)); // Enable CORS
-server.use(express.json()); // Parse JSON requests
+
+
+// ✅ Increase JSON and URL-encoded body limits
+server.use(express.json({ limit: '25mb' }));
+server.use(express.urlencoded({ extended: true, limit: '25mb' }));
+
 server.use(cookieParser()); // Parse cookies
-server.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data
+//server.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data
 server.use(
   session({
     secret: process.env.SESSION_SECRET || "secret123", // Use environment variable for session secret
@@ -43,25 +48,26 @@ server.use(
 server.use(passport.initialize()); // Initialize Passport
 server.use(passport.session()); // Use Passport session
 
+
 // Public Routes (No Authentication Required)
 server.use("/auth", AuthRouter); // Authentication routes
 
 // for ui protect cookie
-server.get("/api/me", AuthRouter, (req, res) => {
-  res.json({ user: (req as any).user });
-});
+// server.get("/api/me", AuthRouter, (req, res) => {
+//   res.json({ user: (req as any).user });
+// });
 
 // Protected Routes (Require Authentication)
-server.use("/api/user", authenticateSession, UserRouter); // User CRUD
+server.use("/api/user", authenticateSession, UserRouter); //// User CRUD
 server.use("/api/post", authenticateSession, PostRouter); // Post CRUD
-server.use("/api/like", authenticateSession, LikeRouter); // Like CRUD
-server.use("/api/useful", authenticateSession, UsefulRouter); // Useful CRUD
-server.use("/api/save", authenticateSession, SaveRouter); // Save CRUD
-server.use("/api/comment", authenticateSession, CommentRouter); // Comment CRUD
-server.use("/api/feedback", authenticateSession, FeedbackRouter); // Feedback CRUD
-server.use("/api/handmade", authenticateSession, HandmadeRouter); // Handmade guide CRUD
-server.use("/api/market", authenticateSession, MarketRouter); // Market CRUD
-server.use("/api/order", authenticateSession, OrderRouter); // Order CRUD
+server.use("/api/like", authenticateSession, LikeRouter); //// Like CRUD
+server.use("/api/useful", authenticateSession, UsefulRouter); //// Useful CRUD
+server.use("/api/save", authenticateSession, SaveRouter); //// Save CRUD
+server.use("/api/comment", authenticateSession, CommentRouter); //// Comment CRUD
+server.use("/api/feedback", authenticateSession, FeedbackRouter); //// Feedback CRUD
+server.use("/api/handmade", authenticateSession, HandmadeRouter); //! Handmade guide CRUD
+server.use("/api/market", authenticateSession, MarketRouter); //// Market CRUD
+server.use("/api/order", authenticateSession, OrderRouter); //// Order CRUD
 
 // Start the server
 const PORT = process.env.PORT || 8000;

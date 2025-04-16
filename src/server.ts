@@ -25,16 +25,16 @@ const server = express();
 
 // Middleware
 const corsOptions = {
-  origin: "http://localhost:5173", // Specify your frontend origin
+  // origin: "http://localhost:5173", // Specify your frontend origin
+  origin: "https://waste-to-wealth-ui.vercel.app",
   credentials: true, // Allow credentials
 };
 
 server.use(cors(corsOptions)); // Enable CORS
 
-
 // ✅ Increase JSON and URL-encoded body limits
-server.use(express.json({ limit: '25mb' }));
-server.use(express.urlencoded({ extended: true, limit: '25mb' }));
+server.use(express.json({ limit: "25mb" }));
+server.use(express.urlencoded({ extended: true, limit: "25mb" }));
 
 server.use(cookieParser()); // Parse cookies
 //server.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data
@@ -47,7 +47,6 @@ server.use(
 );
 server.use(passport.initialize()); // Initialize Passport
 server.use(passport.session()); // Use Passport session
-
 
 // Public Routes (No Authentication Required)
 server.use("/auth", AuthRouter); // Authentication routes
@@ -75,5 +74,4 @@ server.use("/api/order", authenticateSession, OrderRouter); //// Order CRUD
 //   console.log(`Server is running on http://localhost:${PORT}`);
 // });
 
-
-export default server
+export default server;
